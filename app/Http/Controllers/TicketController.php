@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Ticket;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreTicketRequest;
-use Illuminate\Support\Str;
+use function view;
+use function redirect;
 
 class TicketController extends Controller
 {
