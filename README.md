@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # MOE ICT Ticketing System
 
 A Laravel 11-based web application to manage ICT support tickets for the Ministry of Education (MOE). It provides a simple workflow for submitting, viewing, and managing tickets, plus PDF generation of work tickets and basic localization (English/Swahili).
@@ -94,3 +95,6 @@ Troubleshooting
 
 License
 - Internal use. Update as appropriate for your organization.
+=======
+# osTicket-inspired Ticketing System
+>>>>>>> 477a5336d0a4e4d69e1a4ad6cc023b53c96f9745
