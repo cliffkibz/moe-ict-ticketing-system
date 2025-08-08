@@ -13,9 +13,11 @@ class StoreTicketRequest extends FormRequest
 
     public function rules(): array
     {
+        $categories = ['Software','Hardware','Networking','SpecialUse','GeneralSupport'];
         return [
             'requestor_name' => 'required|string|max:255',
             'department' => 'required|string|max:255',
+            'category' => 'required|string|in:' . implode(',', $categories),
             'email' => 'required|email|max:255',
             'issue' => 'required|string|min:10',
             'remarks' => 'nullable|string|max:1000',

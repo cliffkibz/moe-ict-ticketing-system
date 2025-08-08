@@ -86,6 +86,10 @@ Common commands
 - Run database migrations: php artisan migrate
 - Clear caches: php artisan optimize:clear
 
+cache clears
+cd moe-ict-ticketing-system-fresh
+php artisan optimize:clear
+php artisan view:clear
 
 Troubleshooting
 - Port busy on 8000: php artisan serve --host=127.0.0.1 --port=8001

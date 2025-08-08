@@ -8,12 +8,16 @@
 </head>
 <body class="bg-gray-100 min-h-screen">
     <nav class="bg-blue-800 text-white p-4 mb-6">
-        <div class="container mx-auto">
-            <a href="{{ url('/') }}" class="font-bold text-lg">MOE ICT Ticketing</a>
+        <div class="container mx-auto flex items-center gap-6">
+            <a href="{{ route('dashboard') }}" class="font-bold text-lg">MOE ICT Ticketing</a>
+            <a href="{{ route('tickets.index') }}" class="hover:underline">Tickets</a>
+            <a href="{{ route('kb.index') }}" class="hover:underline">Knowledge Base</a>
         </div>
     </nav>
     <main>
         @yield('content')
     </main>
+
+    @stack('scripts')
 </body>
 </html>

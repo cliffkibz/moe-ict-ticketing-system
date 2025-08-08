@@ -9,6 +9,8 @@
                 <th class="py-2 px-4 border">#</th>
                 <th class="py-2 px-4 border">{{ __('Requestor Name') }}</th>
                 <th class="py-2 px-4 border">{{ __('Department') }}</th>
+                <th class="py-2 px-4 border">Category</th>
+                <th class="py-2 px-4 border">{{ __('Priority') }}</th>
                 <th class="py-2 px-4 border">{{ __('Status') }}</th>
                 <th class="py-2 px-4 border">{{ __('tickets.actions') }}</th>
             </tr>
@@ -19,6 +21,17 @@
                     <td class="py-2 px-4 border">{{ $ticket->ticket_no }}</td>
                     <td class="py-2 px-4 border">{{ $ticket->requestor_name }}</td>
                     <td class="py-2 px-4 border">{{ $ticket->department }}</td>
+                    <td class="py-2 px-4 border">{{ $ticket->category ?? '—' }}</td>
+                    <td class="py-2 px-4 border">
+                        @php
+                            $pill = match($ticket->priority ?? 'Normal') {
+                                'High' => 'bg-red-100 text-red-700',
+                                'Normal' => 'bg-gray-100 text-gray-700',
+                                default => 'bg-gray-100 text-gray-700',
+                            };
+                        @endphp
+                        <span class="px-2 py-1 rounded text-xs {{ $pill }}">{{ $ticket->priority ?? 'Normal' }}</span>
+                    </td>
                     <td class="py-2 px-4 border">{{ $ticket->status }}</td>
                     <td class="py-2 px-4 border">
                         <a href="{{ route('tickets.show', $ticket->id) }}" class="text-blue-600 hover:underline">{{ __('tickets.view') }}</a>

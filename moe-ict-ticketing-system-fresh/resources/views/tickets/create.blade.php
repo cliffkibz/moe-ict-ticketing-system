@@ -18,6 +18,17 @@
             <input type="text" name="department" id="department" class="w-full border p-2 rounded" required>
         </div>
         <div class="mb-4">
+            <label for="category" class="block font-medium">Category</label>
+            <select name="category" id="category" class="w-full border p-2 rounded" required>
+                <option value="">-- Select --</option>
+                <option value="Software">Software</option>
+                <option value="Hardware">Hardware</option>
+                <option value="Networking">Networking</option>
+                <option value="SpecialUse">Special use software</option>
+                <option value="GeneralSupport">General Support</option>
+            </select>
+        </div>
+        <div class="mb-4">
             <label for="email" class="block font-medium">{{ __('Email') }}</label>
             <input type="email" name="email" id="email" class="w-full border p-2 rounded" required>
         </div>

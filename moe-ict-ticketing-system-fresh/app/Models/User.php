@@ -12,6 +12,11 @@ class User extends Authenticatable
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
+    public function tickets()
+    {
+        return $this->hasMany(\App\Models\Ticket::class, 'assigned_to');
+    }
+
     /**
      * The attributes that are mass assignable.
      *
