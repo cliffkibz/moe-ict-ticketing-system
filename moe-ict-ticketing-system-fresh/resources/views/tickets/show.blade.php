@@ -55,14 +55,19 @@
 
         <form action="{{ route('tickets.assign', $ticket) }}" method="POST" class="flex items-center gap-2">
             @csrf
-            <select name="assigned_to" class="border rounded px-2 py-1">
-                <option value="">Unassigned</option>
-                @foreach($users as $u)
-                    <option value="{{ $u->id }}" @selected($ticket->assigned_to === $u->id)>{{ $u->name }}</option>
-                @endforeach
-            </select>
-            <button class="px-3 py-2 rounded bg-indigo-600 text-white">Assign</button>
+            <input type="hidden" name="assignee_name" id="assignee_name_input">
+            <button type="button" class="px-3 py-2 rounded bg-indigo-600 text-white" onclick="promptAssign()">Assign</button>
         </form>
+        <script>
+        function promptAssign() {
+            var name = prompt('Enter the name of the person to assign to:');
+            if (name !== null && name.trim() !== '') {
+                document.getElementById('assignee_name_input').value = name.trim();
+                // Submit the form
+                document.querySelector('form[action*="assign"]').submit();
+            }
+        }
+        </script>
 
         @if($ticket->status !== 'Closed')
         <form action="{{ route('tickets.close', $ticket) }}" method="POST" onsubmit="return confirm('Close this ticket?');">

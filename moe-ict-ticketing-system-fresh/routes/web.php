@@ -6,6 +6,7 @@ use App\Http\Controllers\PDFController;
 use App\Http\Controllers\KnowledgeBaseController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ChatbotController;
+use App\Http\Controllers\UserController;
 
 Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
@@ -14,6 +15,14 @@ Route::get('tickets/{ticket}/pdf', [PDFController::class, 'export'])->name('tick
 Route::post('tickets/{ticket}/close', [TicketController::class, 'close'])->name('tickets.close');
 Route::post('tickets/{ticket}/assign', [TicketController::class, 'assign'])->name('tickets.assign');
 Route::post('tickets/{ticket}/rate', [TicketController::class, 'rate'])->name('tickets.rate');
+
+// User management (attachees)
+Route::get('/users', [UserController::class, 'index'])->name('users.index');
+Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
+Route::post('/users', [UserController::class, 'store'])->name('users.store');
+Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
+Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');
+Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
 
 // Knowledge Base routes
 Route::get('/kb', [KnowledgeBaseController::class, 'index'])->name('kb.index');

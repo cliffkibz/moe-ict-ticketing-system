@@ -3,18 +3,21 @@
 @section('content')
 <div class="mx-auto max-w-7xl px-4">
     <!-- Hero / Header -->
-    <div class="relative overflow-hidden rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg mb-8">
+    <div class="relative overflow-hidden rounded-2xl bg-gradient-to-r from-green-700 to-green-600 text-white shadow-lg mb-8" style="background-image: linear-gradient(90deg, var(--brand-green-dark), var(--brand-green));">
         <div class="p-6 md:p-8">
-            <h1 class="text-2xl md:text-3xl font-bold">Operations Dashboard</h1>
-            <p class="mt-1 text-white/80">Real-time overview of tickets and resolution performance</p>
+            <div class="flex items-center gap-4 mb-2">
+                <img src="{{ asset('energy.jpg') }}" alt="MOE Logo" class="h-14 w-auto shadow border border-yellow-300 bg-white" style="max-width:320px;">
+                <br>
+            </div>
+            <p class="text-2xl md:text-3xl font-bold">Operations Dashboard | Real-time overview of tickets and resolution performance</p>
             <div class="mt-4 flex flex-wrap gap-3">
-                <a href="{{ route('tickets.index') }}" class="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 transition-colors px-4 py-2 rounded-lg">
+                <a href="{{ route('tickets.index') }}" class="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 transition-colors px-4 py-2 rounded-lg ring-1 ring-white/20">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M3 7.5A2.25 2.25 0 015.25 5.25h13.5A2.25 2.25 0 0121 7.5v9a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 16.5v-9z" />
                     </svg>
                     <span>View Tickets</span>
                 </a>
-                <a href="{{ route('kb.index') }}" class="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 transition-colors px-4 py-2 rounded-lg">
+                <a href="{{ route('kb.index') }}" class="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 transition-colors px-4 py-2 rounded-lg ring-1 ring-white/20">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 5.25h15M4.5 12h15m-15 6.75h15" />
                     </svg>
@@ -24,6 +27,7 @@
         </div>
         <div class="absolute right-0 top-0 -mr-10 -mt-10 opacity-20 select-none" aria-hidden="true">
             <div class="w-40 h-40 md:w-56 md:h-56 rounded-full bg-white/20 blur-2xl"></div>
+            <div class="absolute bottom-0 right-10 w-24 h-2 bg-yellow-400" style="background-color: var(--brand-gold);"></div>
         </div>
     </div>
 
@@ -239,9 +243,9 @@ document.addEventListener('DOMContentLoaded', function () {
             datasets: [{
                 label: 'Avg minutes',
                 data: @json($chartValues),
-                borderColor: '#2563eb',
-                backgroundColor: 'rgba(37, 99, 235, .10)',
-                pointBackgroundColor: '#2563eb',
+                borderColor: '#0c5c2c',
+                backgroundColor: 'rgba(12, 92, 44, .10)',
+                pointBackgroundColor: '#0c5c2c',
                 pointRadius: 3,
                 borderWidth: 2,
                 tension: 0.3,

@@ -17,7 +17,7 @@ class ChatbotController extends Controller
 {
     public function widget()
     {
-        return view('chat.widget');
+        return view('chat.page');
     }
 
     public function message(Request $request)
@@ -28,16 +28,25 @@ class ChatbotController extends Controller
 
         $text = trim($data['message']);
 
-        // Simple rule-based reply using KB lookup
+        // Improved KB lookup: case-insensitive, keyword-based
+        $keywords = collect(preg_split('/\W+/', strtolower($text), -1, PREG_SPLIT_NO_EMPTY))
+            ->filter(fn($w) => strlen($w) > 2)
+            ->unique()
+            ->take(5)
+            ->values();
+
         $suggest = KnowledgeBaseArticle::where('published', true)
-            ->where(function($q) use ($text) {
-                $q->where('title', 'like', "%$text%")
-                  ->orWhere('content', 'like', "%$text%");
+            ->where(function($q) use ($keywords) {
+                foreach ($keywords as $kw) {
+                    $q->orWhere('title', 'like', "%$kw%")
+                      ->orWhere('content', 'like', "%$kw%");
+                }
             })
             ->limit(3)->get(['title', 'slug']);
 
-        $reply = 'Here are some articles that might help:';
-        if ($suggest->isEmpty()) {
+        if ($suggest->isNotEmpty()) {
+            $reply = 'Here are some articles that might help:';
+        } else {
             $reply = "I'm not sure yet. Please provide more details, or create a ticket.";
         }
 

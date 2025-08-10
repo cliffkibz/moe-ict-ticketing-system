@@ -1,88 +1,185 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>State Department for Energy ICT Work Ticket</title>
+    <meta charset="UTF-8">
+    <title>Work Ticket #{{ $ticket->ticket_no }}</title>
     <style>
-        body { font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #222; }
-        .header { text-align: center; margin-bottom: 10px; }
-        .header .title { font-size: 18px; font-weight: bold; margin-bottom: 2px; }
-        .header .address { font-size: 12px; margin-bottom: 2px; }
-        .header .contact { font-size: 12px; margin-bottom: 2px; }
-        .divider { border-bottom: 2px solid #000; margin: 10px 0; }
-        .section-label { font-weight: bold; margin-top: 10px; margin-bottom: 4px; text-transform: uppercase; font-size: 13px; }
-        .row { display: flex; margin-bottom: 6px; }
-        .label { width: 180px; font-weight: bold; }
-        .value { flex: 1; border-bottom: 1px solid #222; min-height: 18px; padding-left: 4px; }
-        .value.no-underline { border-bottom: none; }
-        .remarks-line { border-bottom: 1px solid #222; width: 100%; height: 18px; margin-bottom: 2px; }
-        .thankyou { text-align: center; margin-top: 30px; font-weight: bold; font-size: 14px; }
-        .signature { margin-top: 18px; font-size: 12px; }
-        .input-box { border: 1px solid #222; min-height: 22px; padding: 2px 4px; margin-bottom: 2px; }
-        .small { font-size: 11px; }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            color: #222;
+            background: #fff;
+            margin: 0;
+            padding: 0;
+        }
+        .header {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            border-bottom: 4px solid #0c5c2c;
+            padding: 18px 0 10px 0;
+        }
+        .header img {
+            height: 60px;
+        }
+        .header .title {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #0c5c2c;
+            letter-spacing: 1px;
+        }
+        .accent {
+            height: 8px;
+            background: linear-gradient(90deg, #0c5c2c 0 60%, #F0B429 60% 100%);
+            margin-bottom: 24px;
+        }
+        .section {
+            margin-bottom: 22px;
+        }
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #0c5c2c;
+            margin-bottom: 8px;
+            border-left: 4px solid #F0B429;
+            padding-left: 8px;
+        }
+        .details-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 18px;
+        }
+        .details-table th, .details-table td {
+            padding: 8px 10px;
+            border-bottom: 1px solid #e5e7eb;
+            text-align: left;
+        }
+        .details-table th {
+            background: #f3f4f6;
+            color: #0c5c2c;
+            font-weight: 600;
+        }
+        .details-table tr:last-child td {
+            border-bottom: none;
+        }
+        .remarks {
+            background: #f9fafb;
+            border-left: 4px solid #0c5c2c;
+            padding: 10px 14px;
+            margin-bottom: 18px;
+            font-size: 1rem;
+        }
+        .signature {
+            margin-top: 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+        .signature .block {
+            width: 45%;
+        }
+        .signature .label {
+            color: #0c5c2c;
+            font-weight: 600;
+            margin-bottom: 30px;
+        }
+        .signature .line {
+            border-bottom: 1.5px solid #222;
+            margin-bottom: 6px;
+            height: 24px;
+        }
+        .footer {
+            margin-top: 40px;
+            font-size: 0.95rem;
+            color: #888;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
-    <!-- Header -->
     <div class="header">
-        <div class="title">State Department for Energy ICT Work Ticket</div>
-        <div class="address">Kawi Complex, Off Red Cross Rd, Nairobi.</div>
-        <div class="contact">
-            Nairobi | Phone: +254 (0) 20 4841000 | Email: info@energy.go.ke | <span class="small">https://energy.go.ke/</span>
+<img src="public_path('energy.jpg')" alt="moe logo" style="height:60px">           <div class="title">Ministry of Education ICT Work Ticket</div>
+    </div>
+    <div class="accent"></div>
+
+    <div class="section">
+        <div class="section-title">Ticket Details</div>
+        <table class="details-table">
+            <tr>
+                <th>Ticket No.</th>
+                <td>{{ $ticket->ticket_no }}</td>
+                <th>Status</th>
+                <td>{{ $ticket->status }}</td>
+            </tr>
+            <tr>
+                <th>Category</th>
+                <td>{{ $ticket->category ?? '—' }}</td>
+                <th>Priority</th>
+                <td>{{ $ticket->priority ?? 'Normal' }}</td>
+            </tr>
+            <tr>
+                <th>Requestor</th>
+                <td>{{ $ticket->requestor_name }}</td>
+                <th>Department</th>
+                <td>{{ $ticket->department }}</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>{{ $ticket->email }}</td>
+                <th>Date Submitted</th>
+                <td>{{ $ticket->created_at->format('d-M-Y H:i') }}</td>
+            </tr>
+            <tr>
+                <th>Assigned To</th>
+                <td colspan="3">{{ optional($ticket->assignee)->name ?? '—' }}</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="section">
+        <div class="section-title">Issue Description</div>
+        <div class="remarks">{{ $ticket->issue }}</div>
+    </div>
+
+    @if($ticket->remarks)
+    <div class="section">
+        <div class="section-title">Remarks</div>
+        <div class="remarks">{{ $ticket->remarks }}</div>
+    </div>
+    @endif
+
+    @if($ticket->status === 'Closed')
+    <div class="section">
+        <div class="section-title">Resolution</div>
+        <table class="details-table">
+            <tr>
+                <th>Resolved At</th>
+                <td>{{ $ticket->resolved_at ? $ticket->resolved_at->format('d-M-Y H:i') : '—' }}</td>
+                <th>Resolution Time</th>
+                <td>{{ $ticket->resolution_minutes ? $ticket->resolution_minutes . ' min' : '—' }}</td>
+            </tr>
+            <tr>
+                <th>Rating</th>
+                <td colspan="3">{{ $ticket->rating ? ($ticket->rating . '/5') : '—' }}</td>
+            </tr>
+        </table>
+    </div>
+    @endif
+
+    <div class="signature">
+        <div class="block">
+            <div class="label">Requestor Signature</div>
+            <div class="line"></div>
+            <div>Date: ____________________</div>
+        </div>
+        <div class="block">
+            <div class="label">Attache Signature</div>
+            <div class="line"></div>
+            <div>Date: ____________________</div>
         </div>
     </div>
-    <div class="divider"></div>
 
-    <!-- Ticket Info Section -->
-    <div class="section-label">Ticket Information</div>
-    <div class="row">
-        <div class="label">Ticket Number:</div>
-        <div class="value">{{ $ticket->ticket_no ?? '_________________' }}</div>
-        <div class="label" style="width:120px;">Date:</div>
-        <div class="value" style="width:120px;">{{ $ticket->created_at ? $ticket->created_at->format('d-M-Y') : '_____/_____/______' }}</div>
+    <div class="footer">
+        &copy; {{ date('Y') }} Ministry of Education — ICT Ticketing System. All rights reserved.
     </div>
-    <div class="row">
-        <div class="label">Completed Date (ICT):</div>
-        <div class="value" style="width:120px;"></div>
-        <div class="label" style="width:120px;">Signature Date:</div>
-        <div class="value" style="width:120px;"></div>
-    </div>
-
-    <div class="divider"></div>
-
-    <!-- Issue/Job Details Section -->
-    <div class="section-label">Reported Issue</div>
-    <div class="input-box">{{ $ticket->issue ?? '_________________________________________________________' }}</div>
-    <div class="section-label">User Remarks</div>
-    <div class="remarks-line"></div>
-    <div class="remarks-line"></div>
-    <div class="remarks-line"></div>
-    <div class="remarks-line"></div>
-
-    <div class="divider"></div>
-
-    <!-- Requested By Section -->
-    <div class="section-label">Requested By</div>
-    <div class="row">
-        <div class="label">Name:</div>
-        <div class="value">{{ $ticket->requestor_name ?? '_________________' }}</div>
-        <div class="label" style="width:120px;">Date & Time:</div>
-        <div class="value" style="width:120px;">{{ $ticket->created_at ? $ticket->created_at->format('d-M-Y H:i') : '_____/_____/______' }}</div>
-    </div>
-    <div class="row">
-        <div class="label">Email:</div>
-        <div class="value">{{ $ticket->email ?? '_________________' }}</div>
-        <div class="label" style="width:120px;">Floor/Dept:</div>
-        <div class="value" style="width:120px;"></div>
-    </div>
-    <div class="row">
-        <div class="label">Work Order Names:</div>
-        <div class="value"></div>
-    </div>
-
-    <div class="divider"></div>
-
-    <!-- Footer / Thank You -->
-    <div class="thankyou">Thank You</div>
-    <div class="signature">Sylvester ?? 20 4841000 F2, Geo</div>
 </body>
 </html>
