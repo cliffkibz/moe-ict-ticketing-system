@@ -35,6 +35,7 @@
             <a href="{{ route('dashboard') }}" class="font-bold text-lg tracking-wide">MOE ICT Ticketing</a>
             <a href="{{ route('tickets.index') }}" class="hover:underline">Tickets</a>
             <a href="{{ route('kb.index') }}" class="hover:underline">Knowledge Base</a>
+            <a href="http://127.0.0.1:8000/users" class="hover:underline">Users</a>
         </div>
     </nav>
 

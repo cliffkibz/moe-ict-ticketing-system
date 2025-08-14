@@ -113,28 +113,71 @@ class TicketController extends Controller
     {
         $issue = strtolower($data['issue'] ?? '');
         $dept = strtolower($data['department'] ?? '');
+        $category = $data['category'] ?? null;
+        $email = $data['email'] ?? null;
 
-        // Keyword-based urgency
-        $urgentKeywords = ['urgent', 'critical', 'down', 'cannot access', 'security', 'breach', 'deadline', 'production'];
-        foreach ($urgentKeywords as $kw) {
-            if (str_contains($issue, $kw)) {
+        // 1) Strong phrases (exact substrings) that almost always imply High
+        $strongPhrases = [
+            'system down', 'server down', 'network down', 'production down', 'production outage',
+            'security breach', 'data breach', 'data loss', 'ransomware', 'cannot access', "can't access", 'cant access',
+        ];
+        foreach ($strongPhrases as $p) {
+            if ($p !== '' && str_contains($issue, $p)) {
                 return 'High';
             }
         }
 
-        // Department-specific bumps
-        if (str_contains($dept, 'exams') || str_contains($dept, 'finance')) {
+        // 2) Strong keywords with word boundaries
+        if (preg_match('/\\b(urgent|critical|outage|breach|security)\\b/i', $issue)) {
             return 'High';
         }
 
-        // Recurring by same email in last 7 days => bump
-        $recentCount = Ticket::where('email', $data['email'] ?? null)
-            ->where('created_at', '>=', now()->subDays(7))
-            ->count();
-        if ($recentCount >= 3) {
+        // 3) Contextual "down" — only if tied to key systems to avoid "download" false positives
+        if (
+            preg_match('/\\b(system|server|network|website|app|vpn)\\b[^\.\n]{0,20}\\bdown\\b/i', $issue) ||
+            preg_match('/\\bdown\\b[^\.\n]{0,20}\\b(system|server|network|website|app|vpn)\\b/i', $issue)
+        ) {
             return 'High';
         }
 
+        // 4) Department bump for critical business functions
+        if (preg_match('/\\b(exam|exams|finance|payroll|accounts)\\b/i', $dept)) {
+            return 'High';
+        }
+
+        // 5) Category-specific heuristics (e.g., networking issues)
+        if ($category === 'Networking' && preg_match('/\\b(outage|down|latency|packet loss|disconnect)\\b/i', $issue)) {
+            return 'High';
+        }
+
+        // 6) Repetition by same reporter within time windows
+        if ($email) {
+            $count24h = Ticket::where('email', $email)
+                ->where('created_at', '>=', now()->subHours(24))
+                ->count();
+            if ($count24h >= 2) {
+                return 'High';
+            }
+
+            $count7d = Ticket::where('email', $email)
+                ->where('created_at', '>=', now()->subDays(7))
+                ->count();
+            if ($count7d >= 3) {
+                return 'High';
+            }
+        }
+
+        // 7) Moderate indicators -> Medium
+        if (preg_match('/\b(error|failed|failing|failure|not working|slow|performance|latency|timeout|timed out)\b/i', $issue)) {
+            return 'Medium';
+        }
+
+        // 8) Low priority for non-critical categories when no other triggers
+        if (in_array($category, ['GeneralSupport','SpecialUse'], true)) {
+            return 'Low';
+        }
+
+        // Default
         return 'Normal';
     }
 }
