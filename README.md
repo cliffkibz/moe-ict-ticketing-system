@@ -1,61 +1,105 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# MOE ICT Ticketing System
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A Laravel 11-based web application to manage ICT support tickets for the Ministry of Education (MOE). It provides a simple workflow for submitting, viewing, and managing tickets, plus PDF generation of work tickets and basic localization (English/Swahili).
 
-## About Laravel
+## Key Features
+- Ticket lifecycle: create, list, view details
+- PDF work ticket export (barryvdh/laravel-dompdf)
+- Localization scaffolding (en, sw)
+- Tailwind CSS with Vite for assets
+- Laravel 11, PHP >= 8.2
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Technology Stack
+- Backend: Laravel 11 (PHP >= 8.2)
+- Frontend: Vite + Tailwind CSS
+- Database: MySQL/MariaDB, PostgreSQL, or SQLite
+- Tooling: Composer, Node.js (>= 18)
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Software & Dependencies Required
+To run this application, you must have the following installed:
+- **PHP 8.2+**
+- **Composer 2+** (PHP dependency manager)
+- **Node.js 18+** (JavaScript runtime)
+- **npm** (comes with Node.js, for frontend assets)
+- **A database**: MySQL/MariaDB, PostgreSQL, or SQLite
+- **Git** (for cloning the repository)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### Optional/Recommended
+- **A web server**: Apache or Nginx (for production)
+- **PowerShell or Bash** (for running commands)
 
-## Learning Laravel
+## Quick Start (Local Development)
+1. **Clone and enter the project**
+   ```sh
+   git clone <repo-url>
+   cd moe-ict-ticketing-system
+   ```
+2. **Environment file**
+   - If `.env` does not exist, copy it from the example:
+     - Linux/macOS: `cp .env.example .env`
+     - Windows (PowerShell): `Copy-Item .env.example .env`
+     - Windows (CMD): `copy .env.example .env`
+   - Update `.env` with your database credentials and `APP_URL` if needed (e.g., `http://127.0.0.1:8000`)
+3. **Install dependencies**
+   ```sh
+   composer install
+   npm install
+   ```
+4. **Generate app key**
+   ```sh
+   php artisan key:generate
+   ```
+5. **Database setup**
+   - Create a database and configure `.env` (`DB_*` values) accordingly.
+   - To use SQLite, set `DB_CONNECTION=sqlite` and create the file:
+     - Linux/macOS: `touch database/database.sqlite`
+     - Windows (PowerShell): `New-Item -ItemType File -Path database/database.sqlite`
+     - Windows (CMD): `type NUL > database\database.sqlite`
+   - Run migrations:
+     ```sh
+     php artisan migrate
+     ```
+6. **Run the app (two terminals)**
+   - Terminal A (Laravel):
+     ```sh
+     php artisan serve
+     ```
+   - Terminal B (Vite dev server for assets):
+     ```sh
+     npm run dev
+     ```
+   - Open [http://127.0.0.1:8000](http://127.0.0.1:8000) in your browser.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Production Build
+- Build assets: `npm run build`
+- Serve with your preferred web server (e.g., Nginx/Apache) pointing the document root to the `public/` directory.
+- Ensure `APP_ENV=production` and `APP_DEBUG=false` in `.env`.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+## Project Structure (High-Level)
+- `app/`
+  - `Http/Controllers/` (TicketController, PDFController)
+  - `Http/Requests/` (StoreTicketRequest)
+  - `Models/` (Ticket)
+- `database/migrations/` (tickets table)
+- `resources/views/`
+  - `tickets/` (create, index, show)
+  - `pdf/` (work_ticket)
+- `routes/web.php`
+- `lang/`
+  - `en/tickets.php`
+  - `sw/tickets.php`
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Common Commands
+- Start Laravel: `php artisan serve`
+- Run Vite dev server: `npm run dev`
+- Run database migrations: `php artisan migrate`
+- Clear caches: `php artisan optimize:clear`
+- Clear view cache: `php artisan view:clear`
 
-## Laravel Sponsors
-
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
-
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## Troubleshooting
+- Port busy on 8000: `php artisan serve --host=127.0.0.1 --port=8001`
+- Vite not found: ensure `npm install` ran successfully; Node 18+ is required.
+- Database connection errors: verify `DB_*` in `.env` and that the DB server is running; for SQLite ensure the database file exists and is writable.
 
 ## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+- Internal use only.
